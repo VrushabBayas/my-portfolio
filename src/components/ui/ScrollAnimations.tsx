@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 
 interface ScrollAnimationProps {
   children: React.ReactNode;
@@ -19,27 +19,38 @@ export default function ScrollAnimation({
 }: ScrollAnimationProps) {
   const elementRef = useRef<HTMLDivElement>(null);
 
+  const handleIntersection = useCallback((entries: IntersectionObserverEntry[]) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        const element = entry.target as HTMLElement;
+        if (delay > 0) {
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              element.classList.add('animate-in');
+            }, delay);
+          });
+        } else {
+          requestAnimationFrame(() => {
+            element.classList.add('animate-in');
+          });
+        }
+      }
+    });
+  }, [delay]);
+
   useEffect(() => {
     const element = elementRef.current;
     if (!element) return;
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setTimeout(() => {
-              element.classList.add('animate-in');
-            }, delay);
-          }
-        });
-      },
-      { threshold }
-    );
+    const observer = new IntersectionObserver(handleIntersection, { 
+      threshold,
+      rootMargin: '50px 0px'
+    });
 
     observer.observe(element);
 
     return () => observer.disconnect();
-  }, [delay, threshold]);
+  }, [handleIntersection, threshold]);
 
   const getAnimationClasses = () => {
     switch (animation) {

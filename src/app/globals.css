@@ -188,6 +188,12 @@ body {
   font-optical-sizing: auto;
   transition: background-color var(--transition-duration) var(--transition-easing),
               color var(--transition-duration) var(--transition-easing);
+  
+  /* Enhanced text rendering for crystal clear text */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-smooth: always;
 }
 
 /* Typography classes */
@@ -240,8 +246,8 @@ body {
 
 [data-theme="terminal"] button:not(nav button):hover,
 [data-theme="terminal"] a:not(nav a):hover {
-  box-shadow: 0 0 12px rgba(113, 156, 214, 0.4), inset 0 0 8px rgba(113, 156, 214, 0.1);
-  text-shadow: 0 0 8px rgba(113, 156, 214, 0.5);
+  box-shadow: 0 0 6px rgba(113, 156, 214, 0.3), inset 0 0 4px rgba(113, 156, 214, 0.08);
+  text-shadow: 0 0 4px rgba(113, 156, 214, 0.4);
   border-color: var(--primary) !important;
 }
 
@@ -301,8 +307,8 @@ body {
 }
 
 [data-theme="terminal"] .bg-card:hover {
-  box-shadow: 0 0 16px rgba(113, 156, 214, 0.2) !important;
-  border-color: rgba(113, 156, 214, 0.4) !important;
+  box-shadow: 0 0 8px rgba(113, 156, 214, 0.15) !important;
+  border-color: rgba(113, 156, 214, 0.3) !important;
 }
 
 /* Nightfox navigation enhancements */
@@ -334,17 +340,86 @@ body {
   backdrop-filter: none !important;
 }
 
+/* Terminal theme comprehensive link styling */
+
+/* Email and phone links */
+[data-theme="terminal"] a[href^="mailto"],
+[data-theme="terminal"] a[href^="tel"] {
+  color: var(--nightfox-cyan);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+[data-theme="terminal"] a[href^="mailto"]:hover,
+[data-theme="terminal"] a[href^="tel"]:hover {
+  color: var(--nightfox-blue);
+  text-shadow: 0 0 4px rgba(99, 205, 207, 0.4);
+}
+
+/* External links (social media, GitHub, etc.) */
+[data-theme="terminal"] a[target="_blank"]:not(.button-glow):not(.modern-button) {
+  color: var(--nightfox-blue);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+[data-theme="terminal"] a[target="_blank"]:not(.button-glow):not(.modern-button):hover {
+  color: var(--nightfox-cyan);
+  text-shadow: 0 0 4px rgba(113, 156, 214, 0.3);
+}
+
+/* Download links */
+[data-theme="terminal"] a[download] {
+  color: var(--nightfox-green);
+  border-color: var(--nightfox-green);
+}
+
+[data-theme="terminal"] a[download]:hover {
+  color: var(--nightfox-yellow);
+  border-color: var(--nightfox-yellow);
+  text-shadow: 0 0 4px rgba(219, 192, 116, 0.3);
+}
+
+/* Text color overrides for better terminal theme readability */
+[data-theme="terminal"] .text-primary {
+  color: var(--nightfox-cyan);
+}
+
+[data-theme="terminal"] .text-accent {
+  color: var(--nightfox-pink);
+}
+
+[data-theme="terminal"] .hover\:text-primary\/80:hover,
+[data-theme="terminal"] .hover\:text-primary:hover {
+  color: var(--nightfox-blue);
+}
+
+[data-theme="terminal"] .hover\:text-accent\/80:hover,
+[data-theme="terminal"] .hover\:text-accent:hover {
+  color: var(--nightfox-magenta);
+}
+
+/* Social media and content links in cards */
+[data-theme="terminal"] .glass a:not([href^="mailto"]):not([href^="tel"]):not(.button-glow) {
+  color: var(--nightfox-blue);
+}
+
+[data-theme="terminal"] .glass a:not([href^="mailto"]):not([href^="tel"]):not(.button-glow):hover {
+  color: var(--nightfox-cyan);
+  text-shadow: 0 0 4px rgba(99, 205, 207, 0.3);
+}
+
 /* Modern UI Animations */
 @keyframes blob {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
-  100% { transform: translate(0px, 0px) scale(1); }
+  0% { transform: translate3d(0px, 0px, 0px) scale(1); }
+  33% { transform: translate3d(20px, -30px, 0px) scale(1.05); }
+  66% { transform: translate3d(-15px, 15px, 0px) scale(0.95); }
+  100% { transform: translate3d(0px, 0px, 0px) scale(1); }
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  0%, 100% { transform: translate3d(0px, 0px, 0px); }
+  50% { transform: translate3d(0px, -8px, 0px); }
 }
 
 @keyframes gradient {
@@ -404,7 +479,7 @@ body {
   animation: blink 1s infinite;
 }
 
-/* Glassmorphism Effects */
+/* Glassmorphism Effects - Base styling preserved, hover effects removed */
 .glass {
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
@@ -421,26 +496,10 @@ body {
   border: 1px solid rgba(113, 156, 214, 0.2);
 }
 
-/* Modern Button Enhancements */
+/* Modern Button Enhancements - Removed conflicting shine effect */
 .modern-button {
   position: relative;
   overflow: hidden;
-  transform-style: preserve-3d;
-}
-
-.modern-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s;
-}
-
-.modern-button:hover::before {
-  left: 100%;
 }
 
 /* Enhanced Card Hover Effects */
@@ -607,11 +666,11 @@ textarea:focus-visible {
 }
 
 .micro-bounce:hover {
-  transform: scale(1.05) translateY(-2px);
+  transform: scale(1.015) translate3d(0px, -1px, 0px);
 }
 
 .micro-bounce:active {
-  transform: scale(0.98) translateY(0px);
+  transform: scale(0.985) translate3d(0px, 0px, 0px);
 }
 
 .ripple-effect {
@@ -702,54 +761,70 @@ textarea:focus-visible {
   content: '';
   position: absolute;
   top: 0;
-  left: -100%;
+  left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-  transition: left 0.5s;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: transform 0.6s ease, opacity 0.3s ease;
+  pointer-events: none;
 }
 
 .button-glow:hover::before {
-  left: 100%;
+  opacity: 1;
+  transform: translateX(100%);
 }
 
 .button-glow:hover {
-  box-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary), 0 0 60px var(--primary);
+  box-shadow: 0 0 4px var(--primary), 0 0 8px var(--primary), 0 0 12px var(--primary);
+}
+
+/* Ensure clean button states to prevent blinking */
+.button-glow:not(:hover)::before {
+  opacity: 0;
+  transform: translateX(-100%);
+}
+
+/* Prevent multiple shine effects on same element */
+.button-glow.modern-button::before {
+  display: none;
 }
 
 /* Scroll-Triggered Animations */
 .scroll-animation {
-  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: opacity 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: opacity, transform;
 }
 
 .scroll-fade-up {
   opacity: 0;
-  transform: translateY(50px);
+  transform: translate3d(0px, 30px, 0px);
 }
 
 .scroll-fade-up.animate-in {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0px, 0px, 0px);
 }
 
 .scroll-fade-left {
   opacity: 0;
-  transform: translateX(-50px);
+  transform: translate3d(-30px, 0px, 0px);
 }
 
 .scroll-fade-left.animate-in {
   opacity: 1;
-  transform: translateX(0);
+  transform: translate3d(0px, 0px, 0px);
 }
 
 .scroll-fade-right {
   opacity: 0;
-  transform: translateX(50px);
+  transform: translate3d(30px, 0px, 0px);
 }
 
 .scroll-fade-right.animate-in {
   opacity: 1;
-  transform: translateX(0);
+  transform: translate3d(0px, 0px, 0px);
 }
 
 .scroll-scale {
@@ -764,12 +839,12 @@ textarea:focus-visible {
 
 .scroll-slide-up {
   opacity: 0;
-  transform: translateY(100px);
+  transform: translate3d(0px, 60px, 0px);
 }
 
 .scroll-slide-up.animate-in {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0px, 0px, 0px);
 }
 
 /* Parallax Effect */
@@ -791,11 +866,66 @@ textarea:focus-visible {
   will-change: transform;
 }
 
-/* Performance Optimizations */
-.card-3d,
-.micro-bounce,
+/* Selective Performance Optimizations - No GPU acceleration on text elements */
+.animate-blob,
+.animate-float,
+.scroll-animation,
+.scroll-fade-up,
+.scroll-fade-left,
+.scroll-fade-right,
+.scroll-scale,
+.scroll-slide-up,
+.reveal-up,
+.reveal-left,
+.reveal-right {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Button optimizations without aggressive GPU acceleration */
+.button-glow,
+.modern-button {
+  will-change: auto;
+}
+
+.button-glow:hover,
+.modern-button:hover {
+  will-change: box-shadow, transform;
+}
+
+/* Optimized performance for decorative elements only */
 .animate-blob,
 .animate-float {
+  -webkit-perspective: 1000px;
+  perspective: 1000px;
+}
+
+/* Text-containing elements - avoid GPU acceleration to prevent blur */
+.card-3d,
+.glass {
+  will-change: auto;
+  contain: layout style;
+}
+
+/* Enhanced text clarity for interactive elements */
+.card-3d,
+.glass,
+.micro-bounce {
+  /* Prevent text blur during transforms */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  
+  /* Better scaling behavior */
+  transform-origin: center;
+  
+  /* Prevent layout shifts */
+  contain: layout style;
+}
+
+/* Micro-bounce without aggressive GPU acceleration */
+.micro-bounce {
   will-change: transform;
 }
 
@@ -1072,4 +1202,92 @@ html {
 .scroll-progress {
   transform: translateZ(0);
   backface-visibility: hidden;
+}
+
+/* Universal Theme Performance Optimizations */
+
+/* Light Theme Optimizations */
+[data-theme="light"] .glass {
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* Dark Theme Performance Optimizations */
+[data-theme="dark"] {
+  /* Smoother transitions for dark mode */
+  --transition-duration: 0.15s;
+}
+
+[data-theme="dark"] .glass {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+[data-theme="dark"] .animate-blob,
+[data-theme="dark"] .animate-float {
+  animation-duration: 6s;
+}
+
+/* Terminal Theme Performance Optimizations */
+[data-theme="terminal"] .glass {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* Reduce excessive glow effects globally */
+.group:hover .blur-xl {
+  filter: blur(12px);
+}
+
+.group:hover .blur-2xl {
+  filter: blur(20px);
+}
+
+.group:hover .blur-3xl {
+  filter: blur(30px);
+}
+
+/* Optimize hover scaling to prevent text blur */
+.group-hover\:scale-105:hover,
+.hover\:scale-105:hover {
+  transform: scale(1.02) !important;
+}
+
+.group:hover .group-hover\:scale-105 {
+  transform: scale(1.02) !important;
+}
+
+/* Removed glass hover scaling effects for cleaner interactions */
+
+/* Override Tailwind hover scaling on glass elements globally */
+.glass.group-hover\:scale-105,
+.glass.hover\:scale-105,
+.group:hover .glass.group-hover\:scale-105,
+.glass:hover.hover\:scale-105 {
+  transform: none !important;
+}
+
+/* Disable all scaling transforms on glass elements */
+.glass {
+  transform: none !important;
+}
+
+/* Allow only non-scaling transforms on glass if needed */
+.glass.translate-x-1,
+.glass.translate-y-1 {
+  transform: translateX(0.25rem) translateY(0.25rem) !important;
+}
+
+/* Preserve text sharpness for non-glass interactive elements */
+.card-3d *,
+.micro-bounce * {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent text blur in scaled elements (non-glass only) */
+.group:hover .card-3d *,
+.micro-bounce:hover * {
+  transform: translateZ(0.01px);
 }

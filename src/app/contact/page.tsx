@@ -5,6 +5,7 @@ import PageLayout from '@/components/layout/PageLayout';
 import HeroSection from '@/components/shared/HeroSection';
 import ScrollAnimation from '@/components/ui/ScrollAnimations';
 import { socialLinks } from '@/data/socialLinks';
+import Link from 'next/link';
 
 
 export default function Contact() {
@@ -56,16 +57,17 @@ export default function Contact() {
         </ScrollAnimation>
 
         {/* Contact Methods */}
-        <div className="grid lg:grid-cols-2 gap-12 mb-20">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 mb-20 items-start">
           {/* Direct Contact */}
           <ScrollAnimation animation="fadeLeft" delay={200}>
-            <div className="space-y-8">
+            <div className="space-y-6 h-full flex flex-col">
               <h2 className="font-heading text-2xl lg:text-3xl font-bold text-foreground">
                 Get In Touch
               </h2>
                   
+              <div className="flex-1 space-y-6">
                   {/* Email */}
-                  <div className="flex items-center gap-6 p-6 glass rounded-2xl border border-primary/20 micro-bounce group">
+                  <div className="flex items-center gap-4 p-6 glass rounded-2xl border border-primary/20 micro-bounce group">
                     <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <span className="text-2xl">📧</span>
                     </div>
@@ -81,7 +83,7 @@ export default function Contact() {
                   </div>
 
                   {/* Phone */}
-                  <div className="flex items-center gap-6 p-6 glass rounded-2xl border border-accent/20 micro-bounce group">
+                  <div className="flex items-center gap-4 p-6 glass rounded-2xl border border-accent/20 micro-bounce group">
                     <div className="w-16 h-16 bg-accent/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <span className="text-2xl">📱</span>
                     </div>
@@ -97,7 +99,7 @@ export default function Contact() {
                   </div>
 
                   {/* Location */}
-                  <div className="flex items-center gap-6 p-6 glass rounded-2xl border border-green-500/20 micro-bounce group">
+                  <div className="flex items-center gap-4 p-6 glass rounded-2xl border border-green-500/20 micro-bounce group">
                     <div className="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <span className="text-2xl">📍</span>
                     </div>
@@ -107,29 +109,32 @@ export default function Contact() {
                     </div>
                   </div>
 
-                  {/* Availability Status */}
-                  <div className="p-6 glass rounded-2xl border border-primary/10">
-                    <h3 className="font-semibold text-foreground mb-3">Current Status</h3>
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                      <span className="text-green-500 font-medium">Available for new opportunities</span>
-                    </div>
-                    <p className="text-sm text-muted">
-                      Open to discussing exciting projects and full-time positions
-                    </p>
-                  </div>
+              </div>
+              
+              {/* Availability Status */}
+              <div className="p-6 glass rounded-2xl border border-primary/10 mt-auto">
+                <h3 className="font-semibold text-foreground mb-3">Current Status</h3>
+                <div className="flex items-center gap-2 mb-2">
+                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+                  <span className="text-green-500 font-medium">Available for new opportunities</span>
+                </div>
+                <p className="text-sm text-muted">
+                  Open to discussing exciting projects and full-time positions
+                </p>
+              </div>
             </div>
           </ScrollAnimation>
 
           {/* Contact Form */}
           <ScrollAnimation animation="fadeRight" delay={400}>
-            <div className="glass rounded-3xl p-8 border border-primary/20">
+            <div className="glass rounded-3xl p-8 border border-primary/20 h-full flex flex-col">
               <h2 className="font-heading text-2xl font-bold text-foreground mb-6">
                 Send a Message
               </h2>
               
-              <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-6 flex-1 flex flex-col">
+                <div className="flex-1 space-y-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="name" className="block text-sm font-medium text-foreground mb-2">
                           Name *
@@ -141,7 +146,7 @@ export default function Contact() {
                           value={formData.name}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                          className="w-full px-4 py-4 bg-secondary/50 border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
                           placeholder="Your name"
                         />
                       </div>
@@ -156,7 +161,7 @@ export default function Contact() {
                           value={formData.email}
                           onChange={handleInputChange}
                           required
-                          className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                          className="w-full px-4 py-4 bg-secondary/50 border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
                           placeholder="your@email.com"
                         />
                       </div>
@@ -173,7 +178,7 @@ export default function Contact() {
                         value={formData.subject}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
+                        className="w-full px-4 py-4 bg-secondary/50 border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200"
                         placeholder="Project inquiry, collaboration, etc."
                       />
                     </div>
@@ -188,12 +193,14 @@ export default function Contact() {
                         value={formData.message}
                         onChange={handleInputChange}
                         required
-                        rows={5}
-                        className="w-full px-4 py-3 bg-secondary/50 border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 resize-vertical"
+                        rows={6}
+                        className="w-full px-4 py-4 bg-secondary/50 border border-border rounded-xl text-foreground placeholder-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 resize-vertical min-h-[120px]"
                         placeholder="Tell me about your project or how we can work together..."
                       />
                     </div>
-
+                </div>
+                
+                <div className="pt-2">
                     <button
                       type="submit"
                       disabled={isSubmitting}
@@ -221,6 +228,7 @@ export default function Contact() {
                         ✅ Message sent successfully! I&apos;ll get back to you soon.
                       </div>
                     )}
+                </div>
                   </form>
             </div>
           </ScrollAnimation>
@@ -282,14 +290,14 @@ export default function Contact() {
                   or just want to chat about technology and adventures, I&apos;m always excited to connect.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button className="group relative px-8 py-4 button-glow text-white rounded-2xl font-medium overflow-hidden transition-all duration-300 micro-bounce ripple-effect">
+                  <Link href="/projects" className="group relative px-8 py-4 button-glow text-white rounded-2xl font-medium overflow-hidden transition-all duration-300 micro-bounce ripple-effect">
                     <span className="relative flex items-center justify-center gap-2">
                       View My Work
                       <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
                     </span>
-                  </button>
+                  </Link>
                   
                   <a 
                     href="/Resume-Vrushabh_Bayas.pdf" 

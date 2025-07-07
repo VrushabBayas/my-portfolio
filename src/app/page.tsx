@@ -2,6 +2,7 @@ import PageLayout from '@/components/layout/PageLayout';
 import TypewriterText from '@/components/ui/TypewriterText';
 import ScrollAnimation from '@/components/ui/ScrollAnimations';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -96,7 +97,7 @@ export default function Home() {
 
               {/* Modern Action Buttons */}
               <div className='flex flex-col sm:flex-row gap-4 reveal-up stagger-4'>
-                <button className='group relative px-8 py-4 button-glow text-white rounded-2xl font-medium overflow-hidden transition-all duration-300 micro-bounce ripple-effect focus-enhanced focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'>
+                <Link href='/projects' className='group relative px-8 py-4 button-glow text-white rounded-2xl font-medium overflow-hidden transition-all duration-300 micro-bounce ripple-effect focus-enhanced focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'>
                   <div className='absolute inset-0 bg-gradient-to-r from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
                   <span className='relative flex items-center justify-center gap-2'>
                     View My Work
@@ -114,11 +115,11 @@ export default function Home() {
                       />
                     </svg>
                   </span>
-                </button>
+                </Link>
 
-                <button className='group px-8 py-4 bg-card/50 backdrop-blur-sm border border-border rounded-2xl font-medium text-foreground hover:bg-card transition-all duration-300 micro-bounce ripple-effect focus-enhanced focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'>
+                <Link href='/contact' className='group px-8 py-4 bg-card/50 backdrop-blur-sm border border-border rounded-2xl font-medium text-foreground hover:bg-card transition-all duration-300 micro-bounce ripple-effect focus-enhanced focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-background'>
                   Get In Touch
-                </button>
+                </Link>
               </div>
 
               {/* Tech Stack Icons */}
@@ -327,9 +328,9 @@ export default function Home() {
                 Let&apos;s discuss your next project and create something
                 extraordinary together.
               </p>
-              <button className='modern-button px-8 py-3 bg-primary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300'>
+              <Link href='/contact' className='modern-button px-8 py-3 bg-primary text-white rounded-xl font-medium hover:scale-105 transition-all duration-300'>
                 Start a Conversation
-              </button>
+              </Link>
             </div>
           </div>
         </div>

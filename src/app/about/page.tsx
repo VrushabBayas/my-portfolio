@@ -2,6 +2,7 @@ import PageLayout from '@/components/layout/PageLayout';
 import ScrollAnimation from '@/components/ui/ScrollAnimations';
 import YouTubeSection from '@/components/content/YouTubeSection';
 import MediumSection from '@/components/content/MediumSection';
+import Link from 'next/link';
 
 export default function About() {
   return (
@@ -410,18 +411,18 @@ export default function About() {
                   I&apos;m always excited to connect with fellow creators and developers.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <button className="group relative px-8 py-4 button-glow text-white rounded-2xl font-medium overflow-hidden transition-all duration-300 micro-bounce ripple-effect">
+                  <Link href="/projects" className="group relative px-8 py-4 button-glow text-white rounded-2xl font-medium overflow-hidden transition-all duration-300 micro-bounce ripple-effect">
                     <span className="relative flex items-center justify-center gap-2">
                       View My Projects
                       <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
                     </span>
-                  </button>
+                  </Link>
                   
-                  <button className="group px-8 py-4 bg-card/50 backdrop-blur-sm border border-border rounded-2xl font-medium text-foreground hover:bg-card transition-all duration-300 micro-bounce ripple-effect">
+                  <Link href="/contact" className="group px-8 py-4 bg-card/50 backdrop-blur-sm border border-border rounded-2xl font-medium text-foreground hover:bg-card transition-all duration-300 micro-bounce ripple-effect">
                     Get In Touch
-                  </button>
+                  </Link>
                 </div>
               </div>
             </ScrollAnimation>
