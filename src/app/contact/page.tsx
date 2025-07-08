@@ -7,9 +7,15 @@ import ScrollAnimation from '@/components/ui/ScrollAnimations';
 import { socialLinks } from '@/data/socialLinks';
 import Link from 'next/link';
 
+interface ContactFormData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+}
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
     subject: '',
@@ -27,7 +33,7 @@ export default function Contact() {
   };
 
   // Generate WhatsApp URL with form data
-  const generateWhatsAppURL = (formData: typeof formData) => {
+  const generateWhatsAppURL = (formData: ContactFormData) => {
     const message = `Hi Vrushabh! 👋
 
 📝 Contact Form Submission:
