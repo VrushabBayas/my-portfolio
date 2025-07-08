@@ -12,7 +12,7 @@ export function useTheme() {
     
     // Get theme from localStorage, default to light theme
     const savedTheme = localStorage.getItem('theme') as Theme;
-    if (savedTheme && ['light', 'dark', 'terminal'].includes(savedTheme)) {
+    if (savedTheme && ['light', 'dark'].includes(savedTheme)) {
       setTheme(savedTheme);
     }
     // Always default to light theme for first visit
@@ -36,10 +36,7 @@ export function useTheme() {
   }, [theme, mounted]);
 
   const toggleTheme = () => {
-    const themes: Theme[] = ['light', 'dark', 'terminal'];
-    const currentIndex = themes.indexOf(theme);
-    const nextIndex = (currentIndex + 1) % themes.length;
-    setTheme(themes[nextIndex]);
+    setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return {

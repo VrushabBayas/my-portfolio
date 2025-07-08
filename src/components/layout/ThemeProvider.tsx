@@ -7,7 +7,7 @@ import { ThemeContextType } from '@/lib/types';
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: ReactNode }) {
-  const { theme, setTheme, mounted } = useTheme();
+  const { theme, setTheme, toggleTheme, mounted } = useTheme();
 
   if (!mounted) {
     return (
@@ -18,7 +18,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <ThemeContext.Provider value={{ theme, setTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );
@@ -28,7 +28,7 @@ export function useThemeContext() {
   const context = useContext(ThemeContext);
   if (context === undefined) {
     // Provide fallback for SSR
-    return { theme: 'light' as const, setTheme: () => {} };
+    return { theme: 'light' as const, setTheme: () => {}, toggleTheme: () => {} };
   }
   return context;
 }

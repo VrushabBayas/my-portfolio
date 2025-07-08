@@ -34,9 +34,10 @@ export interface ContactForm {
   message: string;
 }
 
-export type Theme = 'light' | 'dark' | 'terminal';
+export type Theme = 'light' | 'dark';
 
 export interface ThemeContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
 }
