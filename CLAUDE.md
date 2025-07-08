@@ -88,3 +88,4 @@ MEDIUM_RSS_URL=https://medium.com/feed/@username  # Optional - defaults to Vrush
 ### Commit Message Guidelines
 
 - Never add any claude reference while creating commit message in the end
+- Do not use "Generated with [Claude Code](https://claude.ai/code)" in the commit message
