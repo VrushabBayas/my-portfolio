@@ -26,18 +26,47 @@ export default function Contact() {
     }));
   };
 
+  // Generate WhatsApp URL with form data
+  const generateWhatsAppURL = (formData: typeof formData) => {
+    const message = `Hi Vrushabh! 👋
+
+📝 Contact Form Submission:
+Name: ${formData.name}
+Email: ${formData.email}
+Subject: ${formData.subject}
+
+Message:
+${formData.message}
+
+🌐 Sent from your portfolio website`;
+
+    const encodedMessage = encodeURIComponent(message);
+    return `https://wa.me/919607335159?text=${encodedMessage}`;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission (replace with actual EmailJS integration)
-    setTimeout(() => {
+    // Validate required fields
+    if (!formData.name || !formData.email || !formData.subject || !formData.message) {
       setIsSubmitting(false);
-      setSubmitStatus('success');
-      setFormData({ name: '', email: '', subject: '', message: '' });
-      
-      // Reset status after 3 seconds
+      setSubmitStatus('error');
       setTimeout(() => setSubmitStatus('idle'), 3000);
+      return;
+    }
+    
+    // Generate WhatsApp URL and redirect
+    const whatsappURL = generateWhatsAppURL(formData);
+    
+    // Show success message briefly then redirect
+    setSubmitStatus('success');
+    
+    setTimeout(() => {
+      window.open(whatsappURL, '_blank');
+      setIsSubmitting(false);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+      setTimeout(() => setSubmitStatus('idle'), 2000);
     }, 1000);
   };
 
@@ -98,9 +127,29 @@ export default function Contact() {
                     </div>
                   </div>
 
+                  {/* WhatsApp */}
+                  <div className="flex items-center gap-4 p-6 glass rounded-2xl border border-[#25D366]/20 micro-bounce group">
+                    <div className="w-16 h-16 bg-[#25D366]/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <svg className="w-8 h-8 text-[#25D366]" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.703"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground mb-1">WhatsApp</h3>
+                      <a 
+                        href="https://wa.me/919607335159?text=Hi%20Vrushabh!%20I%20found%20your%20portfolio%20and%20would%20like%20to%20connect."
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-[#25D366] hover:text-[#22c55e] transition-colors duration-200"
+                      >
+                        Start Chat
+                      </a>
+                    </div>
+                  </div>
+
                   {/* Location */}
-                  <div className="flex items-center gap-4 p-6 glass rounded-2xl border border-green-500/20 micro-bounce group">
-                    <div className="w-16 h-16 bg-green-500/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="flex items-center gap-4 p-6 glass rounded-2xl border border-blue-500/20 micro-bounce group">
+                    <div className="w-16 h-16 bg-blue-500/20 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <span className="text-2xl">📍</span>
                     </div>
                     <div>
@@ -204,19 +253,22 @@ export default function Contact() {
                     <button
                       type="submit"
                       disabled={isSubmitting}
-                      className="w-full relative px-8 py-4 button-glow text-white rounded-2xl font-medium overflow-hidden transition-all duration-300 micro-bounce ripple-effect disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="w-full relative px-8 py-4 bg-[#25D366] hover:bg-[#22c55e] text-white rounded-2xl font-medium overflow-hidden transition-all duration-300 micro-bounce ripple-effect disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
                     >
-                      <span className="relative flex items-center justify-center gap-2">
+                      <span className="relative flex items-center justify-center gap-3">
                         {isSubmitting ? (
                           <>
                             <div className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full animate-spin"></div>
-                            Sending...
+                            Redirecting to WhatsApp...
                           </>
                         ) : (
                           <>
-                            Send Message
+                            <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.703"/>
+                            </svg>
+                            Send via WhatsApp
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                             </svg>
                           </>
                         )}
@@ -224,8 +276,14 @@ export default function Contact() {
                     </button>
 
                     {submitStatus === 'success' && (
-                      <div className="p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-500 text-center">
-                        ✅ Message sent successfully! I&apos;ll get back to you soon.
+                      <div className="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl text-green-500 text-center">
+                        ✅ Redirecting to WhatsApp... Your message will open there!
+                      </div>
+                    )}
+                    
+                    {submitStatus === 'error' && (
+                      <div className="mt-4 p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-center">
+                        ❌ Please fill in all required fields.
                       </div>
                     )}
                 </div>
