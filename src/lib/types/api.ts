@@ -44,6 +44,7 @@ export interface MediumArticle {
   content: string;
   creator: string;
   guid: string;
+  wordCount?: number;
 }
 
 export interface MediumProfile {
@@ -54,11 +55,23 @@ export interface MediumProfile {
   lastBuildDate: string;
 }
 
+export interface MediumAnalytics {
+  totalArticles: number;
+  uniqueCategories: number;
+  avgDaysBetweenPosts: number;
+  recentArticles: number;
+  avgWordCount: number;
+  daysSinceLastPost: number;
+  topCategories: string[];
+  publishingFrequency: string;
+}
+
 export interface MediumApiResponse {
   success: boolean;
   data?: {
     articles: MediumArticle[];
     profile: MediumProfile;
+    analytics?: MediumAnalytics;
   };
   error?: string;
   cached?: boolean;

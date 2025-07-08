@@ -40,6 +40,10 @@ export async function GET(request: NextRequest) {
       // Extract categories/tags
       const categories = item.categories || [];
       
+      // Calculate word count from content
+      const fullContent = item.content ? item.content.replace(/<[^>]*>/g, '') : contentSnippet;
+      const wordCount = fullContent.split(/\s+/).filter(word => word.length > 0).length;
+      
       return {
         title: item.title || 'Untitled',
         link: item.link || '',
@@ -48,9 +52,34 @@ export async function GET(request: NextRequest) {
         categories: categories,
         content: item.content || '',
         creator: item.creator || 'Vrushabh Bayas',
-        guid: item.guid || item.link || Math.random().toString(36)
+        guid: item.guid || item.link || Math.random().toString(36),
+        wordCount: wordCount
       };
     });
+
+    // Calculate analytics from articles
+    const allCategories = articles.flatMap(article => article.categories);
+    const uniqueCategories = [...new Set(allCategories)];
+    const categoryCount = uniqueCategories.length;
+    
+    // Calculate publishing frequency (days between posts)
+    const sortedDates = articles.map(article => new Date(article.pubDate)).sort((a, b) => b.getTime() - a.getTime());
+    let avgDaysBetweenPosts = 0;
+    if (sortedDates.length > 1) {
+      const totalDays = (sortedDates[0].getTime() - sortedDates[sortedDates.length - 1].getTime()) / (1000 * 60 * 60 * 24);
+      avgDaysBetweenPosts = Math.round(totalDays / (sortedDates.length - 1));
+    }
+    
+    // Calculate recent activity (last 30 days)
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+    const recentArticles = articles.filter(article => new Date(article.pubDate) > thirtyDaysAgo).length;
+    
+    // Calculate average word count
+    const avgWordCount = articles.length > 0 ? Math.round(articles.reduce((sum, article) => sum + (article.wordCount || 0), 0) / articles.length) : 0;
+    
+    // Days since last post
+    const daysSinceLastPost = sortedDates.length > 0 ? Math.floor((new Date().getTime() - sortedDates[0].getTime()) / (1000 * 60 * 60 * 24)) : 0;
 
     const response: MediumApiResponse = {
       success: true,
@@ -62,6 +91,16 @@ export async function GET(request: NextRequest) {
           link: feed.link || 'https://medium.com/@vrushabh-bayas',
           feedUrl: mediumRssUrl,
           lastBuildDate: feed.lastBuildDate || new Date().toISOString()
+        },
+        analytics: {
+          totalArticles: articles.length,
+          uniqueCategories: categoryCount,
+          avgDaysBetweenPosts: avgDaysBetweenPosts,
+          recentArticles: recentArticles,
+          avgWordCount: avgWordCount,
+          daysSinceLastPost: daysSinceLastPost,
+          topCategories: uniqueCategories.slice(0, 5),
+          publishingFrequency: avgDaysBetweenPosts > 0 ? `~${avgDaysBetweenPosts} days` : 'N/A'
         }
       },
       cached: false
@@ -89,7 +128,8 @@ export async function GET(request: NextRequest) {
             categories: ['React', 'TypeScript', 'Tailwind CSS', 'Frontend'],
             content: '',
             creator: 'Vrushabh Bayas',
-            guid: 'mock-1'
+            guid: 'mock-1',
+            wordCount: 1200
           },
           {
             title: 'Terminal Productivity: My Neovim Setup for Web Development',
@@ -99,7 +139,8 @@ export async function GET(request: NextRequest) {
             categories: ['Neovim', 'Terminal', 'Productivity', 'DevTools'],
             content: '',
             creator: 'Vrushabh Bayas',
-            guid: 'mock-2'
+            guid: 'mock-2',
+            wordCount: 950
           }
         ],
         profile: {
@@ -108,6 +149,16 @@ export async function GET(request: NextRequest) {
           link: 'https://medium.com/@vrushabh-bayas',
           feedUrl: 'https://medium.com/feed/@vrushabh-bayas',
           lastBuildDate: new Date().toISOString()
+        },
+        analytics: {
+          totalArticles: 2,
+          uniqueCategories: 7,
+          avgDaysBetweenPosts: 5,
+          recentArticles: 0,
+          avgWordCount: 1075,
+          daysSinceLastPost: 350,
+          topCategories: ['React', 'TypeScript', 'Neovim', 'Terminal', 'Productivity'],
+          publishingFrequency: '~5 days'
         }
       }
     };

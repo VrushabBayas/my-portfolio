@@ -84,3 +84,7 @@ MEDIUM_RSS_URL=https://medium.com/feed/@username  # Optional - defaults to Vrush
 - Netlify support via `netlify.toml`
 - Static export capable for other hosting platforms
 - All assets optimized with Next.js Image component and proper external domain configuration
+
+### Commit Message Guidelines
+
+- Never add any claude reference while creating commit message in the end

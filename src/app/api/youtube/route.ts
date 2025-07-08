@@ -59,6 +59,40 @@ function formatDuration(duration: string): string {
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }
 
+// Helper function to check if a video is a YouTube Short (≤60 seconds)
+function isShort(duration: string): boolean {
+  const match = duration.match(/PT(\d+H)?(\d+M)?(\d+S)?/);
+  if (!match) return true; // Assume short if no duration found
+  
+  const hours = parseInt(match[1]?.replace('H', '') || '0');
+  const minutes = parseInt(match[2]?.replace('M', '') || '0');
+  const seconds = parseInt(match[3]?.replace('S', '') || '0');
+  
+  const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+  return totalSeconds <= 60; // 60 seconds or less = Short
+}
+
+// Helper function to parse view count for sorting
+function parseViewCount(viewCount: string): number {
+  if (!viewCount || viewCount === '0') return 0;
+  
+  // Remove commas and convert K/M suffixes
+  const cleanCount = viewCount.replace(/,/g, '');
+  
+  if (cleanCount.includes('M')) {
+    return parseFloat(cleanCount.replace('M', '')) * 1000000;
+  } else if (cleanCount.includes('K')) {
+    return parseFloat(cleanCount.replace('K', '')) * 1000;
+  }
+  
+  return parseInt(cleanCount) || 0;
+}
+
+// Helper function to sort videos by view count (highest first)
+function sortByViews(videos: YouTubeVideo[]): YouTubeVideo[] {
+  return videos.sort((a, b) => parseViewCount(b.viewCount) - parseViewCount(a.viewCount));
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -112,9 +146,10 @@ export async function GET(request: NextRequest) {
     const channelData = await channelResponse.json();
     const channelInfo = channelData.items[0];
     
-    // Get channel's videos
+    // Get channel's videos - order by viewCount and fetch more to account for filtering shorts
+    const searchLimit = Math.min(maxVideos * 2, 50); // Fetch up to 2x requested to compensate for shorts filtering
     const videosResponse = await fetch(
-      `${baseUrl}/search?part=snippet&channelId=${channelId}&type=video&order=date&maxResults=${maxVideos}&key=${apiKey}`
+      `${baseUrl}/search?part=snippet&channelId=${channelId}&type=video&order=viewCount&maxResults=${searchLimit}&key=${apiKey}`
     );
     
     if (!videosResponse.ok) {
@@ -135,8 +170,8 @@ export async function GET(request: NextRequest) {
     
     const videoDetailsData = await videoDetailsResponse.json();
     
-    // Combine video data
-    const videos: YouTubeVideo[] = videosData.items.map((item: YouTubeSearchItem, index: number) => {
+    // Combine video data and filter out shorts
+    const allVideos: YouTubeVideo[] = videosData.items.map((item: YouTubeSearchItem, index: number) => {
       const details: YouTubeVideoDetails = videoDetailsData.items[index];
       return {
         id: item.id.videoId,
@@ -149,6 +184,11 @@ export async function GET(request: NextRequest) {
         url: `https://www.youtube.com/watch?v=${item.id.videoId}`
       };
     });
+    
+    // Filter out shorts and sort by view count, then limit to requested amount
+    const videos: YouTubeVideo[] = sortByViews(
+      allVideos.filter(video => !isShort(videoDetailsData.items[allVideos.indexOf(video)]?.contentDetails?.duration || 'PT0S'))
+    ).slice(0, maxVideos);
     
     const channel: YouTubeChannel = {
       subscriberCount: formatCount(channelInfo.statistics.subscriberCount),
@@ -204,12 +244,12 @@ export async function GET(request: NextRequest) {
         videos: [
           {
             id: 'mock-1',
-            title: 'React Hooks Explained: useState, useEffect, and Custom Hooks',
-            description: 'Master React Hooks with practical examples and learn how to create custom hooks for reusable logic...',
+            title: 'Complete React Tutorial: Build a Full-Stack Application',
+            description: 'Learn React from scratch by building a complete full-stack application with authentication, database, and deployment...',
             thumbnail: '/api/placeholder/320/180',
-            publishedAt: '2024-01-15T00:00:00Z',
-            viewCount: '2.5K',
-            duration: '15:32',
+            publishedAt: '2024-01-10T00:00:00Z',
+            viewCount: '12.5K',
+            duration: '45:32',
             url: 'https://www.youtube.com/@codingfun'
           },
           {
@@ -217,9 +257,29 @@ export async function GET(request: NextRequest) {
             title: 'JavaScript ES6+ Features Every Developer Should Know',
             description: 'Explore modern JavaScript features including arrow functions, destructuring, promises, and async/await...',
             thumbnail: '/api/placeholder/320/180',
-            publishedAt: '2024-01-10T00:00:00Z',
-            viewCount: '3.1K',
+            publishedAt: '2024-01-15T00:00:00Z',
+            viewCount: '8.3K',
             duration: '22:45',
+            url: 'https://www.youtube.com/@codingfun'
+          },
+          {
+            id: 'mock-3',
+            title: 'Advanced React Patterns: Hooks, Context, and Performance',
+            description: 'Deep dive into advanced React patterns including custom hooks, context optimization, and performance techniques...',
+            thumbnail: '/api/placeholder/320/180',
+            publishedAt: '2024-01-05T00:00:00Z',
+            viewCount: '5.7K',
+            duration: '38:15',
+            url: 'https://www.youtube.com/@codingfun'
+          },
+          {
+            id: 'mock-4',
+            title: 'Modern CSS Techniques: Grid, Flexbox, and Animations',
+            description: 'Master modern CSS with comprehensive examples of CSS Grid, Flexbox layouts, and smooth animations...',
+            thumbnail: '/api/placeholder/320/180',
+            publishedAt: '2023-12-28T00:00:00Z',
+            viewCount: '4.2K',
+            duration: '28:50',
             url: 'https://www.youtube.com/@codingfun'
           }
         ]

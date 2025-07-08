@@ -1291,3 +1291,38 @@ html {
 .micro-bounce:hover * {
   transform: translateZ(0.01px);
 }
+
+/* Carousel Scrollbar Hide Utility */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Carousel Card Styling */
+.carousel-item {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  width: 320px;
+}
+
+@media (max-width: 640px) {
+  .carousel-item {
+    width: 280px;
+  }
+}
+
+@media (min-width: 768px) {
+  .carousel-item {
+    width: 350px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .carousel-item {
+    width: 320px;
+  }
+}

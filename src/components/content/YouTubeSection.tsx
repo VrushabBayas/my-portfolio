@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import ScrollAnimation from '@/components/ui/ScrollAnimations';
+import Carousel from '@/components/ui/Carousel';
 import { YouTubeVideo, YouTubeChannel, YouTubeApiResponse } from '@/lib/types/api';
 
 
@@ -15,7 +16,7 @@ interface YouTubeSectionProps {
 
 export default function YouTubeSection({ 
   showStats = true, 
-  maxVideos = 4, 
+  maxVideos = 10, 
   title = "Latest YouTube Content",
   className = ""
 }: YouTubeSectionProps) {
@@ -95,34 +96,36 @@ export default function YouTubeSection({
       {/* Channel Stats */}
       {showStats && (
         <ScrollAnimation animation="fadeUp">
-          <div className="glass rounded-2xl p-6 border border-red-500/20 min-h-[280px] flex flex-col">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="w-16 h-16 bg-red-500/20 rounded-2xl flex items-center justify-center">
-                <span className="text-2xl">🎬</span>
-              </div>
-              <div>
-                <h3 className="font-heading text-xl font-bold text-foreground">{channelData?.title || 'Coding Fun'}</h3>
-                <p className="text-red-500 font-medium">Programming Tutorials & Web Development</p>
+          <div className="glass rounded-3xl p-8 border border-red-500/20 mb-12">
+            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
+              <div className="flex items-center gap-6">
+                <div className="w-20 h-20 bg-red-500/20 rounded-3xl flex items-center justify-center">
+                  <span className="text-3xl">🎬</span>
+                </div>
+                <div>
+                  <h3 className="font-heading text-2xl lg:text-3xl font-bold text-foreground">{channelData?.title || 'Coding Fun'}</h3>
+                  <p className="text-red-500 font-semibold text-lg">Programming Tutorials & Web Development</p>
+                </div>
               </div>
             </div>
             
-            <div className="grid grid-cols-3 gap-4 flex-1">
-              <div className="text-center p-4 bg-card/30 rounded-xl">
-                <div className="text-xl font-bold text-red-500">{channelData?.subscriberCount || '1.2K'}</div>
-                <div className="text-sm text-muted">Subscribers</div>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              <div className="text-center p-6 bg-background/50 border border-red-500/20 rounded-2xl hover:bg-background/70 transition-colors duration-200">
+                <div className="text-3xl font-bold text-red-500 mb-2">{channelData?.subscriberCount || '972'}</div>
+                <div className="text-sm font-medium text-foreground/70">Subscribers</div>
               </div>
-              <div className="text-center p-4 bg-card/30 rounded-xl">
-                <div className="text-xl font-bold text-red-500">{channelData?.videoCount || '45'}</div>
-                <div className="text-sm text-muted">Videos</div>
+              <div className="text-center p-6 bg-background/50 border border-red-500/20 rounded-2xl hover:bg-background/70 transition-colors duration-200">
+                <div className="text-3xl font-bold text-red-500 mb-2">{channelData?.videoCount || '85'}</div>
+                <div className="text-sm font-medium text-foreground/70">Videos</div>
               </div>
-              <div className="text-center p-4 bg-card/30 rounded-xl">
-                <div className="text-xl font-bold text-red-500">{channelData?.viewCount || '50K'}</div>
-                <div className="text-sm text-muted">Total Views</div>
+              <div className="text-center p-6 bg-background/50 border border-red-500/20 rounded-2xl hover:bg-background/70 transition-colors duration-200">
+                <div className="text-3xl font-bold text-red-500 mb-2">{channelData?.viewCount || '72.6K'}</div>
+                <div className="text-sm font-medium text-foreground/70">Total Views</div>
               </div>
             </div>
             {isFallback && (
-              <div className="mt-4 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                <p className="text-sm text-yellow-600 dark:text-yellow-400">
+              <div className="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">
+                <p className="text-sm text-yellow-600 dark:text-yellow-400 text-center">
                   📡 {error?.includes('API key') ? 'YouTube API key needed for real data' : 'Using cached data or fallback content'}
                 </p>
               </div>
@@ -134,19 +137,19 @@ export default function YouTubeSection({
       {/* Section Title */}
       {title && (
         <ScrollAnimation animation="fadeUp" delay={100}>
-          <div className="flex items-center justify-between">
-            <h2 className="font-heading text-2xl lg:text-3xl font-bold text-foreground">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <h2 className="font-heading text-3xl lg:text-4xl font-bold text-foreground">
               {title}
             </h2>
             <a
               href="https://www.youtube.com/@codingfun"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-2 px-4 py-2 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 hover:border-red-500/40 rounded-lg text-red-500 hover:text-red-400 transition-all duration-300 font-medium text-sm"
+              className="group inline-flex items-center gap-3 px-6 py-3 bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 hover:border-red-500/40 rounded-xl text-red-500 hover:text-red-400 transition-all duration-300 font-semibold"
             >
               <span className="flex items-center gap-2">
                 View Channel
-                <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                 </svg>
               </span>
@@ -155,15 +158,15 @@ export default function YouTubeSection({
         </ScrollAnimation>
       )}
 
-      {/* Videos Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+      {/* Videos Carousel */}
+      <Carousel className="">
         {videos.map((video, index) => (
-          <ScrollAnimation key={video.id} animation="fadeUp" delay={200 + index * 100}>
+          <ScrollAnimation key={video.id} animation="fadeUp" delay={200 + index * 50}>
             <div 
-              className="group relative cursor-pointer"
+              className="carousel-item group relative cursor-pointer"
               onClick={() => handleVideoClick(video)}
             >
-              <div className="glass rounded-2xl p-4 border border-red-500/10 group-hover:scale-[1.02] transition-all duration-300">
+              <div className="glass rounded-2xl p-4 border border-red-500/10 hover:border-red-500/30 hover:shadow-lg transition-all duration-300">
                 {/* Thumbnail */}
                 <div className="relative aspect-video bg-secondary/50 rounded-lg mb-4 overflow-hidden">
                   {video.thumbnail && video.thumbnail !== '/api/placeholder/320/180' ? (
@@ -201,15 +204,15 @@ export default function YouTubeSection({
                 </div>
 
                 {/* Video Info */}
-                <div className="space-y-2">
-                  <h3 className="font-semibold text-foreground line-clamp-2 group-hover:text-red-500 transition-colors duration-200">
+                <div className="space-y-3">
+                  <h3 className="font-heading font-bold text-foreground line-clamp-2 group-hover:text-red-500 transition-colors duration-200 text-lg">
                     {video.title}
                   </h3>
-                  <p className="text-sm text-muted line-clamp-2">
+                  <p className="text-sm text-muted line-clamp-2 leading-relaxed">
                     {video.description}
                   </p>
-                  <div className="flex items-center justify-between text-xs text-muted">
-                    <span>{video.viewCount} views</span>
+                  <div className="flex items-center justify-between text-sm text-muted pt-2 border-t border-border">
+                    <span className="font-medium">{video.viewCount} views</span>
                     <span>{new Date(video.publishedAt).toLocaleDateString()}</span>
                   </div>
                 </div>
@@ -217,7 +220,7 @@ export default function YouTubeSection({
             </div>
           </ScrollAnimation>
         ))}
-      </div>
+      </Carousel>
 
       {/* Video Modal */}
       {selectedVideo && (
