@@ -24,14 +24,11 @@ export default function YouTubeSection({
   const [videos, setVideos] = useState<YouTubeVideo[]>([]);
   const [selectedVideo, setSelectedVideo] = useState<YouTubeVideo | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [isFallback, setIsFallback] = useState(false);
 
   useEffect(() => {
     const fetchYouTubeData = async () => {
       try {
         setIsLoading(true);
-        setError(null);
         
         const response = await fetch(`/api/youtube?limit=${maxVideos}`);
         
@@ -43,17 +40,14 @@ export default function YouTubeSection({
         console.log('YouTube API Response:', data);
         console.log('Videos received:', data.data?.videos);
         
-        if (data.success && data.data) {
+        if (data.data) {
           setChannelData(data.data.channel);
           setVideos(data.data.videos);
-          setIsFallback(!data.success);
         } else {
           throw new Error(data.error || 'Failed to fetch YouTube data');
         }
       } catch (err) {
         console.error('Error fetching YouTube data:', err);
-        setError(err instanceof Error ? err.message : 'Unknown error');
-        setIsFallback(true);
         // The API route will return fallback data even on error
       } finally {
         setIsLoading(false);
@@ -123,13 +117,6 @@ export default function YouTubeSection({
                 <div className="text-sm font-medium text-foreground/70">Total Views</div>
               </div>
             </div>
-            {isFallback && (
-              <div className="mt-6 p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-xl">
-                <p className="text-sm text-yellow-600 dark:text-yellow-400 text-center">
-                  📡 {error?.includes('API key') ? 'YouTube API key needed for real data' : 'Using cached data or fallback content'}
-                </p>
-              </div>
-            )}
           </div>
         </ScrollAnimation>
       )}
